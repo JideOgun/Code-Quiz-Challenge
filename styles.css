@@ -1,0 +1,14 @@
+.maincontent {
+   border: 1pt solid black; 
+}
+
+#q-container {
+    border: 1pt solid rgb(172, 47, 47); 
+ }
+
+ .answer { 
+        border: 1pt solid rgb(0, 0, 0);
+ }
+ .startbtn { 
+    border: 1pt solid black;
+}
