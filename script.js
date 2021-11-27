@@ -6,7 +6,7 @@ var questions = [
 },
 {
     title: "Q2. How do you comment in Javascript ?",
-    options: ['--','++','//','CC'],
+    options: ['--','++','//','<!--'],
     answer: "//"
 },
 {
@@ -40,6 +40,12 @@ var qCount = 0;
 // score variable
 let score = 0;
 
+// an array to store high scores
+let emptyArray = [];
+
+// the array of high scores from local storage
+let storedArray = JSON.parse(window.localStorage.getItem("highScores"));
+
 // timer starts when startButton is clicked
 var timerCountdown = function(){
     let timerInterval = setInterval(function(){timeLeft--;
@@ -54,31 +60,35 @@ startButtonEl.addEventListener("click", timerCountdown);
 startButtonEl.addEventListener("click", genQuestions)
 
 // Generate questions
-function genQuestions () {
+function genQuestions() {
 startButtonEl.remove();
 p1El.remove();
 
-if (qCount <= questions.length) {
+if (qCount < questions.length) {
     
-    qContainerEl.textContent = questions[qCount].title;
+    qContainerEl.innerHTML = questions[qCount].title;
     optionsEl.textContent = "";
 
 
 for( var i = 0; i < questions[qCount].options.length; i++) {
-    var genOptions = document.createElement('button');
-    genOptions.textContent = questions[qCount].options[i];
-    
+    let genOptions = document.createElement('button');
+    genOptions.innerText = questions[qCount].options[i];
+    console.log(qCount)
+
     genOptions.setAttribute("data-id", i);
     genOptions.addEventListener("click", function(event) { 
        event.stopPropagation();
-
-        if (genOptions.textContent === questions[qCount].answer) {
-            timeLeft = timeLeft + 10;
-             }
-        else{ timeLeft = timeLeft - 13 };
-        console.log(genOptions.textContent);
        
-        qContainerEl.textContent = "";
+       
+        if (genOptions.innerText === questions[qCount].answer) {
+            timeLeft = timeLeft;
+             }
+        else{ 
+            score -= 10;
+            timeLeft = timeLeft - 13 };
+            
+            console.log(genOptions.innerText)
+        qContainerEl.innerHTML = "";
 
         if(qCount === questions.length) {
             return;} 
@@ -92,14 +102,19 @@ for( var i = 0; i < questions[qCount].options.length; i++) {
     }
 }
 
-var getUserScore = function () {
-        console.log(score);
+function getUserSCore () {
+    timerEl.remove();
+    optionsEl.textContent="";
 
     let initialsEl = document.createElement('form')
-    let postbtn =document.createElement('button')
+    let postScoreBtn = document.createElement('button');
 
-    postbtn.textContent = "post"
-    resultsEl.textContent = `you scored ${score} points. Enter your initials:`
-};
-getUserScore();
+    initialsEl.textContent = "";
+    postScoreBtn.textContent = "Post Score";
+
+
+    postScoreBtn.addEventListener();
+}
+
+
 
