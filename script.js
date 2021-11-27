@@ -40,8 +40,11 @@ var qCount = 0;
 // score variable
 let score = 0;
 
+// highscores
+let highScoresEl = document.getElementById("highscores")
+
 // an array to store high scores
-let emptyArray = [];
+let storeHighScoresArray = [];
 
 // the array of high scores from local storage
 let storedArray = JSON.parse(window.localStorage.getItem("highScores"));
@@ -50,8 +53,9 @@ let storedArray = JSON.parse(window.localStorage.getItem("highScores"));
 var timerCountdown = function(){
     let timerInterval = setInterval(function(){timeLeft--;
     timerEl.textContent = timeLeft;
-if(timeLeft <= 0) {
-    clearInterval(timerInterval)
+if(timeLeft <= 0 || qCount === questions.length ) {
+    clearInterval(timerInterval);
+    getUserSCore ();
 }}, 1000)
 };
 
@@ -82,10 +86,9 @@ for( var i = 0; i < questions[qCount].options.length; i++) {
        
         if (genOptions.innerText === questions[qCount].answer) {
             timeLeft = timeLeft;
+            score+=20
              }
-        else{ 
-            score -= 10;
-            timeLeft = timeLeft - 13 };
+        else{ timeLeft = timeLeft - 13 };
             
             console.log(genOptions.innerText)
         qContainerEl.innerHTML = "";
@@ -102,19 +105,64 @@ for( var i = 0; i < questions[qCount].options.length; i++) {
     }
 }
 
+const saveScores = function(array){
+    window.localStorage.setItem("highScores", JSON.stringify(array))
+};
+const defineScoresArray = (arr1, arr2) => {
+    if(arr1 !== null) {
+      return arr1
+    } else {
+      return arr2
+    }
+  }
+
 function getUserSCore () {
     timerEl.remove();
     optionsEl.textContent="";
 
-    let initialsEl = document.createElement('form')
-    let postScoreBtn = document.createElement('button');
+    let initialsEl = document.createElement("input")
+    let postScoreBtn = document.createElement("button");
 
     initialsEl.textContent = "";
+    initialsEl.setAttribute("type", "text")
     postScoreBtn.textContent = "Post Score";
+    resultsEl.innerHTML = `Your score is ${score}.   Enter your initials here `
+
+    resultsEl.append(initialsEl);
+    resultsEl.append(postScoreBtn);
+    
 
 
-    postScoreBtn.addEventListener();
+    postScoreBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        let scoresArray = [storedArray, storeHighScoresArray];
+
+        let initials= initialsEl.value;
+        let userAndScore = {
+            initials: initials,
+            score: score
+        };
+
+        scoresArray.push(userAndScore);
+        saveScores(scoresArray); 
+        displayScore ();
+    });
 }
+
+function displayScore () {
+let scoresArray = defineScoresArray(storedArray, storeHighScoresArray);
+scoresArray.forEach(obj => {
+    let initials = obj.initials;
+    let storedScore = obj.score;
+    let resultsP = document.createElement("p");
+
+    resultsP.innerText = `${initials}: ${storedScore}`;
+    qContainerEl.append(resultsP);
+
+});
+
+};
+
 
 
 
