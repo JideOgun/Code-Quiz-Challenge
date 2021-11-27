@@ -12,3 +12,11 @@
  .startbtn { 
     border: 1pt solid black;
 }
+
+#options-div  { 
+    border: 1pt solid rgb(42, 38, 48);
+}
+
+#results-div  { 
+    border: 1pt solid rgb(49, 156, 115);
+}
