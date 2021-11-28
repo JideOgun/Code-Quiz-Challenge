@@ -32,6 +32,7 @@ p1El = document.getElementById('p1');
 var resultsEl = document.getElementById("results-div")
 var qContainerEl = document.getElementById("q-container");
 optionsEl = document.getElementById("options-div");
+var maincontentEl = document.getElementById("main-content")
 
 
 // variable to keep track of what question we're on
@@ -108,13 +109,7 @@ for( var i = 0; i < questions[qCount].options.length; i++) {
 const saveScores = function(array){
     window.localStorage.setItem("highScores", JSON.stringify(array))
 };
-const defineScoresArray = (arr1, arr2) => {
-    if(arr1 !== null) {
-      return arr1
-    } else {
-      return arr2
-    }
-  }
+
 
 function getUserSCore () {
     timerEl.remove();
@@ -135,9 +130,9 @@ function getUserSCore () {
 
     postScoreBtn.addEventListener("click", function(event) {
         event.preventDefault();
-        let scoresArray = [storedArray, storeHighScoresArray];
+        let scoresArray = defineScoresArray(storedArray, storeHighScoresArray);
 
-        let initials= initialsEl.value;
+        let initials = initialsEl.value;
         let userAndScore = {
             initials: initials,
             score: score
@@ -146,8 +141,19 @@ function getUserSCore () {
         scoresArray.push(userAndScore);
         saveScores(scoresArray); 
         displayScore ();
+        homebtn();
     });
 }
+
+
+const defineScoresArray = (array1, array2) => {
+    if(array1 !== null) {
+      return array1
+    } else {
+      return array2
+    }
+  }
+
 
 function displayScore () {
 let scoresArray = defineScoresArray(storedArray, storeHighScoresArray);
@@ -157,12 +163,20 @@ scoresArray.forEach(obj => {
     let resultsP = document.createElement("p");
 
     resultsP.innerText = `${initials}: ${storedScore}`;
-    qContainerEl.append(resultsP);
+    resultsEl.append(resultsP);
 
 });
 
 };
 
-
+function homebtn() {
+    let homebtn = document.createElement('button');
+    homebtn.textContent = "Back to home page"
+    homebtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        window.location.reload();
+    })
+    maincontentEl.append(homebtn);
+}
 
 
