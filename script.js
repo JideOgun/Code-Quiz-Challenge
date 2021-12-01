@@ -35,6 +35,7 @@ optionsEl = document.getElementById("options-div");
 var maincontentEl = document.getElementById("main-content")
 
 
+
 // variable to keep track of what question we're on
 var qCount = 0;
 
